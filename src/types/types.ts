@@ -3,12 +3,12 @@ export type SessionData = {
   id: string;
 };
 
-export type AuthCode = {
+export type AuthCodeData = {
   code: string;
   state: string;
 };
 
-export type AuthToken = {
+export type AuthTokenData = {
   access_token: string;
   token_type: string;
   scope: string;
