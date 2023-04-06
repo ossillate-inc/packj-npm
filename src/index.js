@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import auditPackage from "./lib/auditPackage.js";
 import getAuthCode from "./lib/getAuthCode.js";
 import getAuthToken from "./lib/getAuthToken.js";
@@ -18,3 +19,5 @@ if (!access_token) process.exit(1);
 // audit package
 const response = await auditPackage("npm", "react", access_token);
 console.log(response);
+console.log(chalk.greenBright("Audit successfully!"));
+process.exit();
