@@ -3,6 +3,7 @@ import { AUTH_ENDPOINT, BASE_URL, HOSTNAME } from "../config/config.js";
 import QueryString from "qs";
 import chalk from "chalk";
 import crypto from "crypto";
+import { AuthCodeData } from "../types/types.js";
 
 export default async function getAuthCode(clientID: string) {
   try {
@@ -27,7 +28,7 @@ export default async function getAuthCode(clientID: string) {
 
     const url = BASE_URL + AUTH_ENDPOINT;
 
-    const { data } = await axios.post(
+    const { data }: { data: AuthCodeData } = await axios.post(
       url + "?" + QueryString.stringify(params),
       config
     );
