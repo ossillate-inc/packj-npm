@@ -34,7 +34,10 @@ export default async function getAuthToken(clientID, authCode) {
 
     if (error) throw error;
 
-    console.log("auth token:", data);
+    if (!data.access_token) throw new Error("Invalid auth token");
+    if (!data.token_type) throw new Error("Invalid auth token");
+    if (!data.scope) throw new Error("Invalid auth token");
+    if (!data.refresh_token) throw new Error("Invalid auth token");
 
     return data;
   } catch (error) {
