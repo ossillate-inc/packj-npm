@@ -7,6 +7,7 @@ import {
 } from "../config/config.js";
 import axios from "axios";
 import QueryString from "qs";
+import { AuthTokenData } from "../types/types.js";
 
 export default async function getAuthToken(clientID: string, authCode: string) {
   try {
@@ -26,7 +27,7 @@ export default async function getAuthToken(clientID: string, authCode: string) {
 
     const url = BASE_URL + TOKEN_ENDPOINT;
 
-    const { data } = await axios.post(
+    const { data }: { data: AuthTokenData } = await axios.post(
       url,
       QueryString.stringify(params),
       config
