@@ -32,15 +32,6 @@ export default async function getAuthCode(clientID) {
       config
     );
 
-    console.log(error);
-    /*
-    data => {
-      code: '8jfPHYRxB1xbhbn1O8tE0I4QaEY6Ij',
-      state: '8418fee63ed7095653562cdb9e3f6c9b2f894934'
-    }
-    */
-    console.log(data);
-
     if (error) throw error;
 
     // Validate data
