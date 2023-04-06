@@ -5,9 +5,10 @@ import {
   HOSTNAME,
   SESSION_ENDPOINT,
 } from "../config/config.js";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import QueryString from "qs";
 import * as readline from "node:readline/promises";
+import { SessionData } from "../types/types.js";
 
 const signal = AbortSignal.timeout(60_000); // 1 minute
 signal.addEventListener(
@@ -39,13 +40,11 @@ export default async function setupSession() {
 
     const url = BASE_URL + SESSION_ENDPOINT;
 
-    const { data, error } = await axios.post(
+    const { data }: { data: SessionData } = await axios.post(
       url,
       QueryString.stringify(params),
       config
     );
-
-    if (error) throw error;
 
     // Validate data
     if (!data.auth_url) throw new Error("Invalid session data");

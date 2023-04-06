@@ -1,12 +1,12 @@
 import axios from "axios";
-import { AUDIT_ENDPOINT, BASE_URL } from "../config/config.js";
 import qs from "qs";
 import chalk from "chalk";
+import { AUDIT_ENDPOINT, BASE_URL } from "../config/config.js";
 
 export default async function auditPackage(
-  packageManager,
-  packageName,
-  accessToken
+  packageManager: string,
+  packageName: string,
+  accessToken: string
 ) {
   try {
     const params = {
@@ -25,9 +25,7 @@ export default async function auditPackage(
     };
 
     const url = BASE_URL + AUDIT_ENDPOINT;
-    const { data, error } = await axios.post(url, qs.stringify(params), config);
-
-    if (error) throw error;
+    const { data } = await axios.post(url, qs.stringify(params), config);
 
     return data;
   } catch (error) {

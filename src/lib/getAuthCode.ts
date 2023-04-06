@@ -4,7 +4,7 @@ import QueryString from "qs";
 import chalk from "chalk";
 import crypto from "crypto";
 
-export default async function getAuthCode(clientID) {
+export default async function getAuthCode(clientID: string) {
   try {
     const state = crypto
       .createHash("sha1")
@@ -27,12 +27,10 @@ export default async function getAuthCode(clientID) {
 
     const url = BASE_URL + AUTH_ENDPOINT;
 
-    const { data, error } = await axios.post(
+    const { data } = await axios.post(
       url + "?" + QueryString.stringify(params),
       config
     );
-
-    if (error) throw error;
 
     // Validate data
     if (!data.code) throw new Error("Invalid auth code");

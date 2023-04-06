@@ -8,7 +8,7 @@ import {
 import axios from "axios";
 import QueryString from "qs";
 
-export default async function getAuthToken(clientID, authCode) {
+export default async function getAuthToken(clientID: string, authCode: string) {
   try {
     const params = {
       client_id: clientID,
@@ -26,13 +26,11 @@ export default async function getAuthToken(clientID, authCode) {
 
     const url = BASE_URL + TOKEN_ENDPOINT;
 
-    const { data, error } = await axios.post(
+    const { data } = await axios.post(
       url,
       QueryString.stringify(params),
       config
     );
-
-    if (error) throw error;
 
     if (!data.access_token) throw new Error("Invalid auth token");
     if (!data.token_type) throw new Error("Invalid auth token");

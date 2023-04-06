@@ -13,4 +13,3 @@ export const PACKJ_VERSION = "0.15";
 export const HOSTNAME = os.hostname();
 
 export const GRANT_TYPE = "code";
-// export const CREDS_FILE_PATH = "~/.packj.creds";

@@ -2,8 +2,8 @@
   "extends": "@tsconfig/recommended/tsconfig.json",
   "compilerOptions": {
     "allowJs": true,
-    "target": "es6",
-    "module": "CommonJS",
+    "target": "ESNext",
+    "module": "NodeNext",
     "outDir": "dist",
     "strict": true
   },
