@@ -3,7 +3,11 @@ import { AUDIT_ENDPOINT, BASE_URL } from "../config/config.js";
 import qs from "qs";
 import chalk from "chalk";
 
-export default async function auditPackage(packageManager, packageName, token) {
+export default async function auditPackage(
+  packageManager,
+  packageName,
+  accessToken
+) {
   try {
     const params = {
       package_manager: packageManager,
@@ -16,7 +20,7 @@ export default async function auditPackage(packageManager, packageName, token) {
       headers: {
         "User-Agent": "npm",
         From: "host",
-        Authorization: "Bearer " + token,
+        Authorization: "Bearer " + accessToken,
       },
     };
 
