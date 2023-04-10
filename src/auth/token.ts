@@ -1,13 +1,16 @@
 import chalk from "chalk";
+
 import {
   BASE_URL,
   HOSTNAME,
   REDIRECT_ENDPOINT,
   TOKEN_ENDPOINT,
-} from "../config/config.js";
+} from "../config.js";
+
 import axios from "axios";
 import QueryString from "qs";
-import { AuthTokenData } from "../types/types.js";
+
+import { AuthTokenData } from "./types.js";
 
 export default async function getAuthToken(clientID: string, authCode: string) {
   try {
@@ -38,7 +41,8 @@ export default async function getAuthToken(clientID: string, authCode: string) {
     if (!data.scope) throw new Error("Invalid auth token");
     if (!data.refresh_token) throw new Error("Invalid auth token");
 
-    return data;
+    return data.access_token;
+
   } catch (error) {
     console.error(chalk.red("Error getting auth token"));
     console.error(chalk.red(error));

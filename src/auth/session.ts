@@ -1,14 +1,17 @@
 import chalk from "chalk";
+
 import {
   BASE_URL,
   GRANT_TYPE,
   HOSTNAME,
   SESSION_ENDPOINT,
-} from "../config/config.js";
+} from "../config.js";
+
 import axios, { AxiosResponse } from "axios";
 import QueryString from "qs";
 import * as readline from "node:readline/promises";
-import { SessionData } from "../types/types.js";
+
+import { SessionData } from "./types.js";
 
 const signal = AbortSignal.timeout(60_000); // 1 minute
 signal.addEventListener(

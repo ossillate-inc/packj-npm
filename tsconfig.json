@@ -4,7 +4,7 @@
     "allowJs": true,
     "target": "ESNext",
     "module": "NodeNext",
-    "outDir": "dist",
+    "outDir": "./lib",
     "strict": true
   },
   "include": ["src/**/*"],

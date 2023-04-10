@@ -1,9 +1,12 @@
 import axios from "axios";
-import { AUTH_ENDPOINT, BASE_URL, HOSTNAME } from "../config/config.js";
+
+import { AUTH_ENDPOINT, BASE_URL, HOSTNAME } from "../config.js";
+
 import QueryString from "qs";
 import chalk from "chalk";
 import crypto from "crypto";
-import { AuthCodeData } from "../types/types.js";
+
+import { AuthCodeData } from "./types.js";
 
 export default async function getAuthCode(clientID: string) {
   try {

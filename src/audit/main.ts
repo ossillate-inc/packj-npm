@@ -1,7 +1,8 @@
 import axios from "axios";
 import qs from "qs";
 import chalk from "chalk";
-import { AUDIT_ENDPOINT, BASE_URL } from "../config/config.js";
+
+import { AUDIT_ENDPOINT, BASE_URL } from "../config.js";
 
 export default async function auditPackage(
   packageManager: string,
