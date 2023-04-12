@@ -7,6 +7,7 @@ import { AUDIT_ENDPOINT, BASE_URL } from "../config.js";
 export default async function auditPackage(
   packageManager: string,
   packageName: string,
+  packageVersion: string,
   accessToken: string
 ) {
   try {
@@ -14,7 +15,9 @@ export default async function auditPackage(
       package_manager: packageManager,
       request_type: "package",
       request_name: "test-npm",
-      packages: JSON.stringify([{ name: packageName, version: "" }]),
+      packages: JSON.stringify([
+        { name: packageName, version: packageVersion },
+      ]),
     };
 
     const config = {
