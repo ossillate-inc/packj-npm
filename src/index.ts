@@ -18,7 +18,7 @@ const access_token = await getAuthToken(clientID, authCode);
 if (!access_token) process.exit(1);
 
 // audit package
-const response = await auditPackage("npm", "react", access_token);
+const response = await auditPackage("npm", "react", "latest", access_token);
 console.log(response);
 console.log(chalk.greenBright("Audit successfully!"));
 process.exit();
