@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import qs from "qs";
 import chalk from "chalk";
 
@@ -32,8 +32,8 @@ export default async function auditPackage(
     const { data } = await axios.post(url, qs.stringify(params), config);
 
     return data;
-  } catch (error) {
-    console.error(chalk.red(error));
+  } catch (error: any) {
+    console.error(chalk.red(JSON.stringify(error.response.data)));
     return;
   }
 }
