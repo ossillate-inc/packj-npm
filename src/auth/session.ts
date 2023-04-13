@@ -56,9 +56,6 @@ export default async function setupSession() {
 
     const _ = await rl.question(prompt, { signal });
 
-    // TODO: Write data to ~/.packj.creds
-    //
-
     return data.id;
   } catch (error) {
     console.error(chalk.red("Error setting up session"));
