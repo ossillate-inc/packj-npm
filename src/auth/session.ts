@@ -1,13 +1,8 @@
 import chalk from "chalk";
 
-import {
-  BASE_URL,
-  GRANT_TYPE,
-  HOSTNAME,
-  SESSION_ENDPOINT,
-} from "../config.js";
+import { BASE_URL, GRANT_TYPE, HOSTNAME, SESSION_ENDPOINT } from "../config.js";
 
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import QueryString from "qs";
 import * as readline from "node:readline/promises";
 
@@ -60,6 +55,9 @@ export default async function setupSession() {
       "\n";
 
     const _ = await rl.question(prompt, { signal });
+
+    // TODO: Write data to ~/.packj.creds
+    //
 
     return data.id;
   } catch (error) {
