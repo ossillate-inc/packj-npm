@@ -41,8 +41,7 @@ export default async function getAuthToken(clientID: string, authCode: string) {
     if (!data.scope) throw new Error("Invalid auth token");
     if (!data.refresh_token) throw new Error("Invalid auth token");
 
-    return data.access_token;
-
+    return data;
   } catch (error) {
     console.error(chalk.red("Error getting auth token"));
     console.error(chalk.red(error));
