@@ -56,7 +56,7 @@ export default async function setupSession() {
 
     const _ = await rl.question(prompt, { signal });
 
-    return data.id;
+    return data;
   } catch (error) {
     console.error(chalk.red("Error setting up session"));
     console.error(chalk.red(error));
