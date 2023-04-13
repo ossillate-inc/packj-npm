@@ -3,3 +3,4 @@ dist/
 *.env*
 _*
 lib/
+.packj.creds
