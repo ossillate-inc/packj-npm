@@ -4,6 +4,7 @@ import getAuthCode from "./auth/code.js";
 import getAuthToken from "./auth/token.js";
 import setupSession from "./auth/session.js";
 import { readFileSync, writeFileSync } from "node:fs";
+import { CREDS_FILE_PATH } from "./config.js";
 
 const args = process.argv;
 
@@ -47,7 +48,7 @@ if (option === "auth") {
       expires: "<expire>", // TODO: change
     },
   };
-  writeFileSync("./.packj.creds", JSON.stringify(content), { flag: "w" });
+  writeFileSync(CREDS_FILE_PATH, JSON.stringify(content), { flag: "w" });
   process.exit();
 }
 
@@ -70,7 +71,7 @@ if (option === "audit") {
 
   const [packageName, packageVersion] = args[3].split(":");
 
-  const fileText = readFileSync("./.packj.creds", "utf8");
+  const fileText = readFileSync(CREDS_FILE_PATH, "utf8");
   const accessToken = JSON.parse(fileText).token.access_token; // TODO: read from ~/.packj.creds
   if (!accessToken) {
     console.log(chalk.red("Error: Invalid client ID"));
