@@ -3,8 +3,15 @@ import auditPackage from "./audit/main.js";
 import getAuthCode from "./auth/code.js";
 import getAuthToken from "./auth/token.js";
 import setupSession from "./auth/session.js";
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { CREDS_FILE_PATH } from "./config.js";
+
+const usageText = `
+  usage: main audit PACKAGES [PACKAGES ...]
+  
+  args: 
+    PACKAGES: Audit packages (e.g., npm:axios), optionally specific version (e.g., npm:axios:1.3.5) 
+`;
 
 const args = process.argv;
 
@@ -25,62 +32,88 @@ if (args.length < 3) {
 const option = args[2] as "auth" | "audit";
 
 if (option === "auth") {
-  const data = await setupSession();
-  if (!data) process.exit(1);
+  var fetch = 0;
+  try {
 
-  const { id: clientID, auth_url } = data;
+    const fileText = readFileSync(CREDS_FILE_PATH, "utf8");
+    const token = JSON.parse(fileText).token;
+	const expiresAt = new Date(token.expires).valueOf()
 
-  // get auth code
-  const authCode = await getAuthCode(clientID);
-  if (!authCode) process.exit(1);
-
-  // get auth token
-  const authTokenData = await getAuthToken(clientID, authCode);
-  if (!authTokenData) process.exit(1);
-
-  // TODO: Write data to ~/.packj.creds
-  const content = {
-    auth_url,
-    code: authCode,
-    id: clientID,
-    token: {
-      ...authTokenData,
-      expires: "<expire>", // TODO: change
-    },
+    if (expiresAt < Date.now()) {
+      throw Error('Tokens expired!')
+    }
+    console.log("Already authenticated. Nothing to do.");
+    process.exit(1);
+  } catch (err: any) {
+      console.log(err)
+      if (err.code !== 'ENOENT') {
+		// nothing to do, fall through
+      } else if (err.code !== 'ENOENT') {
+      } else {
+        console.log(chalk.red("Error loading credentials. Ignoring."));
+      }
   };
-  writeFileSync(CREDS_FILE_PATH, JSON.stringify(content), { flag: "w" });
+
+  try {
+    const data = await setupSession();
+    if (!data) process.exit(1);
+
+    const { id: clientID, auth_url } = data;
+
+    // get auth code
+    const authCode = await getAuthCode(clientID);
+    if (!authCode) process.exit(1);
+
+    // get auth token
+    const authTokenData = await getAuthToken(clientID, authCode);
+    if (!authTokenData) process.exit(1);
+
+    // TODO: Write data to ~/.packj.creds
+    const content = {
+      auth_url,
+      code: authCode,
+      id: clientID,
+      token: {
+        ...authTokenData,
+        expires: new Date(Date.now() + 3600*1000),
+      },
+    };
+    writeFileSync(CREDS_FILE_PATH, JSON.stringify(content), { flag: "w" });
+    console.log("Successfully authenticated (account activated).");
+  } catch (err) {
+    console.log(chalk.red("Failed to authenticate: @{err}"));
+  }
   process.exit();
 }
 
 if (option === "audit") {
   if (args.length < 4) {
-    const usageText = `
-    usage: main audit PACKAGES
-
-    args: 
-      PACKAGES: Audit packages (e.g., axios:1.3.5)
-  `;
     console.log(usageText);
     process.exit();
   }
 
-  if (args[3].split(":").length < 2) {
-    console.log(chalk.red("Error: Invalid package"));
+  const [packageManager, packageName, packageVersion] = args[3].split(":");
+  if (!packageManager || !packageName) {
+    console.log(chalk.red("Error: Invalid input"));
+    console.log(usageText);
     process.exit(1);
   }
 
-  const [packageName, packageVersion] = args[3].split(":");
+  if (!existsSync(CREDS_FILE_PATH)) {
+      console.log(chalk.red("User not authenticated. Run 'auth' before 'audit'"));
+      process.exit(1);
+  }
 
   const fileText = readFileSync(CREDS_FILE_PATH, "utf8");
-  const accessToken = JSON.parse(fileText).token.access_token; // TODO: read from ~/.packj.creds
+  const accessToken = JSON.parse(fileText).token.access_token;
   if (!accessToken) {
-    console.log(chalk.red("Error: Invalid client ID"));
+    console.log(chalk.red("Invalid client ID"));
     process.exit(1);
   }
 
   // Audit package
   const response = await auditPackage(
-    "npm",
+    packageManager,
     packageName,
     packageVersion,
     accessToken
