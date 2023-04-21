@@ -33,26 +33,26 @@ const option = args[2] as "auth" | "audit";
 
 if (option === "auth") {
   var fetch = 0;
-  try {
 
+  try {
     const fileText = readFileSync(CREDS_FILE_PATH, "utf8");
     const token = JSON.parse(fileText).token;
-	const expiresAt = new Date(token.expires).valueOf()
+    const expiresAt = new Date(token.expires).valueOf();
 
     if (expiresAt < Date.now()) {
-      throw Error('Tokens expired!')
+      throw Error("Tokens expired!");
     }
     console.log("Already authenticated. Nothing to do.");
     process.exit(1);
   } catch (err: any) {
-      console.log(err)
-      if (err.code !== 'ENOENT') {
-		// nothing to do, fall through
-      } else if (err.code !== 'ENOENT') {
-      } else {
-        console.log(chalk.red("Error loading credentials. Ignoring."));
-      }
-  };
+    console.log(err);
+    if (err.code !== "ENOENT") {
+      // nothing to do, fall through
+    } else if (err.code !== "ENOENT") {
+    } else {
+      console.log(chalk.red("Error loading credentials. Ignoring."));
+    }
+  }
 
   try {
     const data = await setupSession();
@@ -75,7 +75,7 @@ if (option === "auth") {
       id: clientID,
       token: {
         ...authTokenData,
-        expires: new Date(Date.now() + 3600*1000),
+        expires: new Date(Date.now() + 3600 * 1000),
       },
     };
     writeFileSync(CREDS_FILE_PATH, JSON.stringify(content), { flag: "w" });
@@ -100,8 +100,8 @@ if (option === "audit") {
   }
 
   if (!existsSync(CREDS_FILE_PATH)) {
-      console.log(chalk.red("User not authenticated. Run 'auth' before 'audit'"));
-      process.exit(1);
+    console.log(chalk.red("User not authenticated. Run 'auth' before 'audit'"));
+    process.exit(1);
   }
 
   const fileText = readFileSync(CREDS_FILE_PATH, "utf8");
