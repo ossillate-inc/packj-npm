@@ -1,12 +1,12 @@
 {
-  "name": "packj-oclif",
+  "name": "packj-npm",
   "version": "0.0.0",
-  "description": "oclif example Hello World CLI",
+  "description": "Packj flags malicious, vulnerable, and \"risky\" NPM packages in your software supply chain",
   "author": "KhoiUna @KhoiUna",
   "bin": {
     "packj": "./bin/run"
   },
-  "homepage": "https://github.com/KhoiUna/packj-oclif",
+  "homepage": "https://github.com/ossillate-inc/packj-npm",
   "license": "MIT",
   "main": "dist/index.js",
   "repository": "KhoiUna/packj-oclif",
@@ -67,9 +67,11 @@
   "engines": {
     "node": ">=12.0.0"
   },
-  "bugs": "https://github.com/KhoiUna/packj-oclif/issues",
+  "bugs": "https://github.com/ossillate-inc/packj-npm/issues",
   "keywords": [
-    "oclif"
+    "oclif",
+    "npm",
+    "packj"
   ],
   "types": "dist/index.d.ts"
 }
