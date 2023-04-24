@@ -1,14 +1,13 @@
 import axios from "axios";
 
-import { AUTH_ENDPOINT, BASE_URL, HOSTNAME } from "../config.js";
+import { AUTH_ENDPOINT, BASE_URL, HOSTNAME } from "../config";
 
-import QueryString from "qs";
-import chalk from "chalk";
-import crypto from "crypto";
+import * as QueryString from "qs";
+import * as crypto from "node:crypto";
 
-import { AuthCodeData } from "./types.js";
+import { AuthCodeData } from "./types";
 
-export default async function getAuthCode(clientID: string) {
+export default async function getAuthCode(clientID: string): Promise<undefined | string> {
   try {
     const state = crypto
       .createHash("sha1")
@@ -37,13 +36,12 @@ export default async function getAuthCode(clientID: string) {
     );
 
     // Validate data
-    if (!data.code) throw new Error("Invalid auth code");
-    if (!data.state) throw new Error("Invalid auth code");
+    if (!data.code) throw "Invalid auth code"
+    if (!data.state) throw "Invalid auth code"
 
     return data.code;
   } catch (error) {
-    console.error(chalk.red("Error getting auth code"));
-    console.error(chalk.red(error));
+    console.error(error)
     return;
   }
 }
