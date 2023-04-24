@@ -1,4 +1,4 @@
-import os from "os";
+import * as os from "node:os";
 
 export const BASE_URL = "https://packj.dev";
 
