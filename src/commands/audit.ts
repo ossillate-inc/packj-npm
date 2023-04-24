@@ -9,6 +9,8 @@ export default class Audit extends Command {
   static examples = [
     '<%= config.bin %> <%= command.id %> npm:axios:1.3.5',
     '<%= config.bin %> <%= command.id %> pypi:requests:1.0',
+    '<%= config.bin %> <%= command.id %> --file npm:package.json',
+    '<%= config.bin %> <%= command.id %> -f pypi:requirements.txt',
   ]
 
   static flags = {
@@ -64,7 +66,7 @@ export default class Audit extends Command {
     if (flags.file) {
       const [packageManager, filePath] = flags.file.split(':')
 
-      if (!packageManager) this.error('Invalid package file format.', {
+      if (!packageManager || !filePath) this.error('Invalid package file format.', {
         exit: 1
       })
 
