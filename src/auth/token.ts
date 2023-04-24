@@ -1,18 +1,16 @@
-import chalk from "chalk";
-
 import {
   BASE_URL,
   HOSTNAME,
   REDIRECT_ENDPOINT,
   TOKEN_ENDPOINT,
-} from "../config.js";
+} from "../config";
 
 import axios from "axios";
-import QueryString from "qs";
+import * as QueryString from "qs";
 
-import { AuthTokenData } from "./types.js";
+import { AuthTokenData } from "./types";
 
-export default async function getAuthToken(clientID: string, authCode: string) {
+export default async function getAuthToken(clientID: string, authCode: string): Promise<undefined | AuthTokenData> {
   try {
     const params = {
       client_id: clientID,
@@ -36,15 +34,14 @@ export default async function getAuthToken(clientID: string, authCode: string) {
       config
     );
 
-    if (!data.access_token) throw new Error("Invalid auth token");
-    if (!data.token_type) throw new Error("Invalid auth token");
-    if (!data.scope) throw new Error("Invalid auth token");
-    if (!data.refresh_token) throw new Error("Invalid auth token");
+    if (!data.access_token) throw "Invalid auth token"
+    if (!data.token_type) throw "Invalid auth token"
+    if (!data.scope) throw "Invalid auth token"
+    if (!data.refresh_token) throw "Invalid auth token"
 
     return data;
   } catch (error) {
-    console.error(chalk.red("Error getting auth token"));
-    console.error(chalk.red(error));
+    console.error(error)
     return;
   }
 }
