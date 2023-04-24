@@ -1,5 +1,5 @@
 {
-  "name": "packj-npm",
+  "name": "packj",
   "version": "0.0.0",
   "description": "Packj flags malicious, vulnerable, and \"risky\" NPM packages in your software supply chain",
   "author": "KhoiUna @KhoiUna",
