@@ -3,13 +3,14 @@ import qs from "qs";
 import chalk from "chalk";
 
 import { AUDIT_ENDPOINT, BASE_URL } from "../config.js";
+import { AuditPackageResponse } from "./types.js";
 
 export default async function auditPackage(
   packageManager: string,
   packageName: string,
   packageVersion: string,
   accessToken: string
-) {
+): Promise<undefined | AuditPackageResponse> {
   try {
     const params = {
       package_manager: packageManager,
