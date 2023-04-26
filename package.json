@@ -2,42 +2,76 @@
   "name": "packj",
   "version": "0.0.0",
   "description": "Packj flags malicious, vulnerable, and \"risky\" NPM packages in your software supply chain",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "build": "tsc",
-    "test": "jest .",
-    "lint": "eslint \"**/*.{js,ts}\""
+  "author": "KhoiUna @KhoiUna",
+  "bin": {
+    "packj": "./bin/run"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ossillate-inc/packj.git"
-  },
-  "keywords": [
-    "softwaresupplychain",
-    "cybersecurity",
-    "malwaredetection",
-    "typo-squatting",
-    "softwarecompositionanalysis"
-  ],
-  "author": "Ossillate Inc. <oss@ossillate.com> (https://packj.dev)",
+  "homepage": "https://github.com/ossillate-inc/packj-npm",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ossillate-inc/packj/issues"
-  },
-  "homepage": "https://github.com/ossillate-inc/packj#readme",
+  "main": "dist/index.js",
+  "repository": "KhoiUna/packj-oclif",
+  "files": [
+    "/bin",
+    "/dist",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
   "dependencies": {
-    "axios": "^1.3.5",
-    "chalk": "^5.2.0",
-    "prompt-sync": "^4.2.0",
+    "@oclif/core": "^2",
+    "@oclif/plugin-help": "^5",
+    "@oclif/plugin-plugins": "^2.4.6",
+    "axios": "^1.3.6",
     "qs": "^6.11.1"
   },
   "devDependencies": {
-    "@tsconfig/recommended": "^1.0.2",
-    "@types/node": "^18.15.11",
-    "@types/prompt-sync": "^4.2.0",
+    "@oclif/test": "^2.3.16",
+    "@types/chai": "^4",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.18.24",
     "@types/qs": "^6.9.7",
+    "chai": "^4",
+    "eslint": "^7.32.0",
+    "eslint-config-oclif": "^4",
+    "eslint-config-oclif-typescript": "^1.0.3",
+    "mocha": "^9",
+    "oclif": "^3",
+    "shx": "^0.3.3",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4"
-  }
+    "tslib": "^2.5.0",
+    "typescript": "^4.9.5"
+  },
+  "oclif": {
+    "bin": "packj",
+    "dirname": "packj",
+    "commands": "./dist/commands",
+    "plugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-plugins"
+    ],
+    "topicSeparator": " ",
+    "topics": {
+      "hello": {
+        "description": "Say hello to the world and others"
+      }
+    }
+  },
+  "scripts": {
+    "build": "shx rm -rf dist && tsc -b",
+    "lint": "eslint . --ext .ts --config .eslintrc",
+    "postpack": "shx rm -f oclif.manifest.json",
+    "posttest": "npm run lint",
+    "prepack": "npm run build && oclif manifest && oclif readme",
+    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+    "version": "oclif readme && git add README.md"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "bugs": "https://github.com/ossillate-inc/packj-npm/issues",
+  "keywords": [
+    "oclif",
+    "npm",
+    "packj"
+  ],
+  "types": "dist/index.d.ts"
 }

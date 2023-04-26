@@ -1,12 +1,14 @@
-import chalk from "chalk";
-
-import { BASE_URL, GRANT_TYPE, HOSTNAME, SESSION_ENDPOINT } from "../config.js";
+import { BASE_URL, GRANT_TYPE, HOSTNAME, SESSION_ENDPOINT } from "../config";
 
 import axios from "axios";
-import QueryString from "qs";
+import * as QueryString from "qs";
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// eslint-disable-next-line node/no-missing-import
 import * as readline from "node:readline/promises";
 
-import { SessionData } from "./types.js";
+import { SessionData } from "./types";
 
 const signal = AbortSignal.timeout(60_000); // 1 minute
 signal.addEventListener(
@@ -22,7 +24,7 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-export default async function setupSession() {
+export default async function setupSession(): Promise<undefined | SessionData> {
   try {
     const params = {
       hostname: HOSTNAME,
@@ -45,8 +47,8 @@ export default async function setupSession() {
     );
 
     // Validate data
-    if (!data.auth_url) throw new Error("Invalid session data");
-    if (!data.id) throw new Error("Invalid session data");
+    if (!data.auth_url) throw "Invalid session data"
+    if (!data.id) throw "Invalid session data"
 
     // Manual user auth
     const prompt =
@@ -54,12 +56,11 @@ export default async function setupSession() {
       data.auth_url +
       "\n";
 
-    const _ = await rl.question(prompt, { signal });
+    await rl.question(prompt, { signal });
 
     return data;
   } catch (error) {
-    console.error(chalk.red("Error setting up session"));
-    console.error(chalk.red(error));
+    console.error(error)
     return;
   }
 }

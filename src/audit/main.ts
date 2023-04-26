@@ -1,15 +1,26 @@
-import axios, { AxiosError } from "axios";
-import qs from "qs";
-import chalk from "chalk";
+import axios from "axios";
+import * as QueryString from "qs";
+import { AUDIT_ENDPOINT, BASE_URL } from "../config";
 
-import { AUDIT_ENDPOINT, BASE_URL } from "../config.js";
+type AuditPackageResponse = {
+  package_manager: string
+  packages: { name: string, risks: null | string[], version: string }[]
+  request_name: string
+  request_type: string
+  url: string
+}
 
 export default async function auditPackage(
   packageManager: string,
   packageName: string,
   packageVersion: string,
   accessToken: string
-) {
+): Promise<{
+  success: AuditPackageResponse | false,
+  error: {
+    message: string
+  } | false
+}> {
   try {
     const params = {
       package_manager: packageManager,
@@ -29,11 +40,13 @@ export default async function auditPackage(
     };
 
     const url = BASE_URL + AUDIT_ENDPOINT;
-    const { data } = await axios.post(url, qs.stringify(params), config);
+    const { data } = await axios.post(url, QueryString.stringify(params), config);
 
-    return data;
+    return { success: data, error: false }
   } catch (error: any) {
-    console.error(chalk.red(JSON.stringify(error.response.data)));
-    return;
+    return {
+      success: false,
+      error: error.response.data
+    }
   }
 }
