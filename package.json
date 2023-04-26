@@ -9,6 +9,9 @@
     "test": "jest .",
     "lint": "eslint \"**/*.{js,ts}\""
   },
+  "bin": {
+    "packj": "bin/packj.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ossillate-inc/packj.git"
