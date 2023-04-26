@@ -2,7 +2,8 @@ import { Args, Command, Flags, ux } from '@oclif/core'
 import auditPackage from '../audit/main'
 import { existsSync, readFileSync } from 'fs'
 import { CREDS_FILE_PATH } from '../config'
-
+import * as readline from 'node:readline'
+import * as fs from 'node:fs'
 export default class Audit extends Command {
   static description = 'Audit packages for malware/risky attributes'
 
@@ -70,7 +71,38 @@ export default class Audit extends Command {
         exit: 1
       })
 
-      if (packageManager === 'pypi') return
+      if (packageManager === 'pypi') {
+        const readInterface = readline.createInterface({
+          input: fs.createReadStream(filePath),
+        });
+
+        let index = 0
+        for await (const line of readInterface) {
+          const [packageName, packageVersion] = line.split('==')
+          const response = await this.auditPackage(packageManager, packageName, packageVersion as string)
+
+          ux.table([response], {
+            package_manager: {},
+            package_name: {
+              get: row => row.packages[0].name,
+              minWidth: 25
+            },
+            version: {
+              get: row => row.packages[0].version
+            },
+            risks: {
+              get: row => row.packages[0].risks
+            },
+            url: {},
+          }, {
+            "no-header": index > 0,
+          })
+
+          index++
+        }
+        return
+      }
+
 
       const packageFile = readFileSync(filePath, 'utf8')
       const dependencyObject = JSON.parse(packageFile).dependencies
