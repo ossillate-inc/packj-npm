@@ -31,6 +31,10 @@ if (args.length < 3) {
 
 const option = args[2] as "auth" | "audit";
 
+// TODO: get from commandline
+const requestName = 'packj-npm';
+const requestType = 'cli';
+
 if (option === "auth") {
   var fetch = 0;
 
@@ -133,7 +137,7 @@ if (option === "audit") {
       const output = []
       for await (const line of readInterface) {
         const [packageName, packageVersion] = line.split('==')
-        const response = await auditPackage(packageManager, packageName, packageVersion, accessToken)
+        const response = await auditPackage(requestName, requestType, packageManager, packageName, packageVersion, accessToken)
         if (!response) {
           console.error(chalk.red('Error: Error auditing dependency file'));
           process.exit(1)
@@ -157,7 +161,7 @@ if (option === "audit") {
 
     const output = []
     for (const [packageName, packageVersion] of Object.entries(dependencyObject)) {
-      const response = await auditPackage(packageManager, packageName, packageVersion as string, accessToken)
+      const response = await auditPackage(requestName, requestType, packageManager, packageName, packageVersion as string, accessToken)
       if (!response) {
         console.error(chalk.red('Error: Error auditing package.'));
         process.exit(1)
@@ -186,6 +190,8 @@ if (option === "audit") {
 
   // Audit package
   const response = await auditPackage(
+    requestName,
+    requestType,
     packageManager,
     packageName,
     packageVersion,
