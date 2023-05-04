@@ -1,5 +1,4 @@
-import axios, { AxiosError } from "axios";
-import qs from "qs";
+import axios from "axios";
 import chalk from "chalk";
 
 import { AUDIT_ENDPOINT, BASE_URL } from "../config.js";
